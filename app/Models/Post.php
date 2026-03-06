@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\Category;
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
+{
+    protected $fillable = [
+        'category_id',
+        'title',
+        'description',
+        'content',
+    ];
+
+    // Define the relationship with Category
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    // Define the relationship with Tag
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+}
