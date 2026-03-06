@@ -78,9 +78,7 @@
             @csrf
 
             {{-- โลโก้ระบบ (เปลี่ยน path เป็นของคุณเอง) --}}
-            <img class="mb-4" src="https://getbootstrap.com/docs/5.0/assets/brand/bootstrap-logo.svg" alt="CMS Logo"
-                width="72" height="57">
-            <h1 class="h3 mb-3 fw-normal">ลงชื่อเข้าใช้งาน</h1>
+            <h1 class="h3 mb-3 fw-normal">Knowledge Management</h1>
 
             {{-- หากมี Error ระดับ Global (เช่น รหัสผิด) ให้แสดงตรงนี้ --}}
             @if ($errors->any())
