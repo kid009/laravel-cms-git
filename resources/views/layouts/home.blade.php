@@ -19,9 +19,10 @@
         rel="stylesheet">
 
     <style>
-        body{
+        body {
             font-family: "Prompt", sans-serif;
         }
+
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -44,7 +45,7 @@
         }
 
         .blog-header-logo {
-            font-family: "Playfair Display", Georgia, "Times New Roman", serif
+            font-family: "Prompt", sans-serif;
                 /*rtl:Amiri, Georgia, "Times New Roman", serif*/
             ;
             font-size: 2.25rem;
@@ -60,7 +61,7 @@
         h4,
         h5,
         h6 {
-            font-family: "Playfair Display", Georgia, "Times New Roman", serif
+            font-family: "Prompt", sans-serif;
                 /*rtl:Amiri, Georgia, "Times New Roman", serif*/
             ;
         }
@@ -166,52 +167,61 @@
 
 <body>
 
-
-
+    <div class="bg-dark text-secondary px-4 py-5 text-center">
+        <div class="py-5">
+            <h1 class="display-5 fw-bold text-white">ศูนย์รวมความรู้วิศวกรรมซอฟต์แวร์</h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="fs-5 mb-4">
+                    แบ่งปันประสบการณ์การออกแบบสถาปัตยกรรมระบบ, การเขียนโค้ดด้วย Laravel
+                และการจัดการ Server ระดับ Production เพื่อยกระดับทักษะของนักพัฒนาทุกคน
+                </p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a href='/' class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">
+                        อ่านบทความล่าสุด
+                    </a>
+                    {{-- <a href='' class="btn btn-outline-light btn-lg px-4">
+                        ค้นหาตามแท็ก
+                    </a> --}}
+                </div>
+            </div>
+        </div>
+    </div>
 
     <main class="container mt-3">
 
         <div class="row g-5">
 
-            <div class="col-md-8">
+            <div class="col-md-9">
 
                 @yield('content')
 
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="position-sticky" style="top: 2rem;">
-                    <div class="p-4 mb-3 bg-light rounded">
-                        <h4 class="fst-italic">About</h4>
-                        <p class="mb-0">Customize this section to tell your visitors a little bit about your
-                            publication, writers, content, or something else entirely. Totally up to you.</p>
+
+                    <div class="p-4">
+                        <h4>Category</h4>
+                        <div class="list-group">
+                            <a href="/" class="list-group-item list-group-item-action">
+                                All
+                            </a>
+                            @foreach ($categories as $category)
+                                <a href="{{ route('home.category', $category->id) }}"
+                                    class="list-group-item list-group-item-action">
+                                    {{ $category->name }}
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
 
                     <div class="p-4">
-                        <h4 class="fst-italic">Archives</h4>
-                        <ol class="list-unstyled mb-0">
-                            <li><a href="#">March 2021</a></li>
-                            <li><a href="#">February 2021</a></li>
-                            <li><a href="#">January 2021</a></li>
-                            <li><a href="#">December 2020</a></li>
-                            <li><a href="#">November 2020</a></li>
-                            <li><a href="#">October 2020</a></li>
-                            <li><a href="#">September 2020</a></li>
-                            <li><a href="#">August 2020</a></li>
-                            <li><a href="#">July 2020</a></li>
-                            <li><a href="#">June 2020</a></li>
-                            <li><a href="#">May 2020</a></li>
-                            <li><a href="#">April 2020</a></li>
-                        </ol>
-                    </div>
-
-                    <div class="p-4">
-                        <h4 class="fst-italic">Elsewhere</h4>
-                        <ol class="list-unstyled">
-                            <li><a href="#">GitHub</a></li>
-                            <li><a href="#">Twitter</a></li>
-                            <li><a href="#">Facebook</a></li>
-                        </ol>
+                        <h4>Tag</h4>
+                        @foreach ($tags as $tag)
+                            <a href="{{ route('home.tag', $tag->id) }}" class="text-decoration-none">
+                                <span class="badge rounded-pill bg-success">{{ $tag->name }}</span>
+                            </a>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -219,15 +229,9 @@
 
     </main>
 
-
     <footer class="blog-footer">
-        <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a
-                href="https://twitter.com/mdo">@mdo</a>.</p>
-        <p>
-            <a href="#">Back to top</a>
-        </p>
+        <p>&copy; {{ date('Y') }} <a href="https://km.pongpoom-dev.com/">Knowledge Management</a>. All rights reserved.</p>
     </footer>
-
 
 </body>
 

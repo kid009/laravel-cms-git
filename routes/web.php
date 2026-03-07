@@ -9,6 +9,9 @@ use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/post/{id}', [HomeController::class, 'show'])->name('home.show');
+Route::get('/category/{id}', [HomeController::class, 'category'])->name('home.category');
+Route::get('/tag/{id}', [HomeController::class, 'tag'])->name('home.tag');
 
 Route::get('/show-login-form', [LoginController::class, 'showLoginForm'])->name('show-login-form');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
