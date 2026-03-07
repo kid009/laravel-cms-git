@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Category\DeleteCategoryAction;
+use App\Actions\Category\UpdateCategoryAction;
+use App\Actions\Category\CreateCategoryAction;
+use App\DTOs\CategoryData;
+use App\Http\Requests\Category\StoreCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use Exception;
 
 class CategoryController extends Controller
 {
@@ -12,7 +18,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(10);
+        $categories = Category::select('id', 'name')->latest()->paginate(10);
 
         return view('category.index', [
             'categories' => $categories,
@@ -32,17 +38,15 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request, CreateCategoryAction $action)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name',
-        ]);
+        $dto = new CategoryData(
+            name: $request->validated('name')
+        );
 
-        Category::create($validated);
+        $action->execute($dto);
 
-        session()->flash('success', 'Category created successfully.');
-
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
 
     /**
@@ -58,7 +62,7 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
 
         return view('category.edit', [
             'category' => $category,
@@ -68,37 +72,36 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoryRequest $request, string $id, UpdateCategoryAction $action)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+        $category = Category::findOrFail($id);
 
-        $category = Category::find($id);
-        $category->update($validated);
+        $dto = new CategoryData(
+            name: $request->validated('name')
+        );
 
-        session()->flash('success', 'Category updated successfully.');
+        $action->execute($category, $dto);
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, DeleteCategoryAction $action)
     {
-        $category = Category::find($id);
+        try
+        {
+            $category = Category::findOrFail($id);
 
-        if($category->posts()->count() > 0) {
-            session()->flash('error', 'Category cannot be deleted because it has associated posts.');
+            $action->execute($category);
 
-            return redirect()->route('categories.index');
+            return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
         }
-
-        $category->delete();
-
-        session()->flash('success', 'Category deleted successfully.');
-
-        return redirect()->route('categories.index');
+        catch (Exception $e)
+        {
+            // จับ Exception จาก Action มาแสดงผล
+            return redirect()->route('categories.index')->with('error', $e->getMessage());
+        }
     }
 }
