@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePostRequest extends FormRequest
 {
@@ -22,10 +23,15 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => 'required|exists:categories,id',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'content' => 'required|string'
+            'category_id' => ['required', 'exists:categories,id'],
+            // 💡 อัปเดต: ตรวจสอบไม่ให้ซ้ำกับโพสต์อื่น ยกเว้นโพสต์ตัวเอง
+            'title'       => ['required', 'string', 'max:255', Rule::unique('posts')->ignore($this->post)],
+            'description' => ['required', 'string', 'max:255'],
+            'content'     => ['required', 'string'],
+
+            // 💡 อัปเดต: อย่าลืมรับค่า tag_ids
+            'tag_ids'     => ['nullable', 'array'],
+            'tag_ids.*'   => ['integer', 'exists:tags,id'],
         ];
     }
 }

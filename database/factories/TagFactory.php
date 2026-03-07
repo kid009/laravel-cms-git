@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,8 @@ class TagFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => strtolower(fake()->unique()->word()),
+            'name' => fake()->unique()->word(),
+            'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
         ];
     }
 }

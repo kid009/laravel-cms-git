@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DTOs;
+namespace App\DTOs\Category;
 
-final readonly class CategoryData
+final readonly class UpdateCategoryData
 {
     public function __construct(
         public string $name,

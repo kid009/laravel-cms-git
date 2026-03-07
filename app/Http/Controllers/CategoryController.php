@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Category\CreateCategoryAction;
 use App\Actions\Category\DeleteCategoryAction;
 use App\Actions\Category\UpdateCategoryAction;
-use App\Actions\Category\CreateCategoryAction;
-use App\DTOs\CategoryData;
+use App\DTOs\Category\CreateCategoryData;
+use App\DTOs\Category\UpdateCategoryData;
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Models\Category;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -40,8 +42,9 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request, CreateCategoryAction $action)
     {
-        $dto = new CategoryData(
-            name: $request->validated('name')
+        $dto = new CreateCategoryData(
+            name: $request->validated('name'),
+            userId: Auth::user()->id,
         );
 
         $action->execute($dto);
@@ -76,7 +79,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        $dto = new CategoryData(
+        $dto = new UpdateCategoryData(
             name: $request->validated('name')
         );
 

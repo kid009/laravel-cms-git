@@ -12,7 +12,8 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        'user_id',
     ];
 
     // Define the relationship with Post

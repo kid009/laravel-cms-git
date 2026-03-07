@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,13 +21,11 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            // Fallback: ถ้าตอน Create ไม่ได้ส่ง Category เข้ามาหรือไม่ได้ recycle() ให้สร้างใหม่
-            'category_id' => Category::factory(),
             'title' => fake()->sentence(),
-            // ใช้ text() แบบกำหนดตัวอักษรเพื่อไม่ให้ล้น Layout ของ Card เวลาแสดงผล
-            'description' => fake()->text(150),
-            // สร้างเนื้อหาบทความแบบยาวๆ สมจริง (HTML-ready)
-            'content' => fake()->paragraphs(rand(3, 8), true),
+            'description' => fake()->paragraph(),
+            'content' => fake()->text(1000), // จำลองเนื้อหาขนาดยาว 1000 ตัวอักษร
+            'category_id' => Category::inRandomOrder()->first()->id ?? Category::factory(),
+            'user_id' => User::inRandomOrder()->first()->id ?? User::factory(),
         ];
     }
 }

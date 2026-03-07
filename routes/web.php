@@ -13,8 +13,8 @@ Route::get('/post/{id}', [HomeController::class, 'show'])->name('home.show');
 Route::get('/category/{id}', [HomeController::class, 'category'])->name('home.category');
 Route::get('/tag/{id}', [HomeController::class, 'tag'])->name('home.tag');
 
-Route::get('/show-login-form', [LoginController::class, 'showLoginForm'])->name('show-login-form');
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/login', [LoginController::class, 'show'])->name('login');
+Route::post('/login', [LoginController::class, 'authenticate']);
 
 Route::middleware(['auth'])->group(function () {
 

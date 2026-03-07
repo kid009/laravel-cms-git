@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Post\CreatePostAction;
+use App\Actions\Post\DeletePostAction;
+use App\Actions\Post\UpdatePostAction;
+use App\DTOs\Post\CreatePostData;
+use App\DTOs\Post\UpdatePostData;
 use App\Http\Requests\Post\CreatePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -41,15 +46,18 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreatePostRequest $request)
+    public function store(CreatePostRequest $request, CreatePostAction $action)
     {
-        $validated = $request->validated();
+        $dto = new CreatePostData(
+            title: $request->validated('title'),
+            description: $request->validated('description'),
+            content: $request->validated('content'),
+            categoryId: $request->validated('category_id'),
+            userId: Auth::user()->id,
+            tagIds: $request->validated('tag_ids') ?? []
+        );
 
-        $post = Post::create($validated);
-
-        if ($request->has('tag_ids')) {
-            $post->tags()->attach($request->input('tag_ids'));
-        }
+        $action->execute($dto);
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
@@ -81,16 +89,19 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, string $id)
+    public function update(UpdatePostRequest $request, string $id, UpdatePostAction $action)
     {
         $post = Post::findOrFail($id);
-        $validated = $request->validated();
 
-        if($request->tag_ids) {
-            $post->tags()->sync($request->tag_ids);
-        }
+        $data = new UpdatePostData(
+            title: $request->validated('title'),
+            description: $request->validated('description'),
+            content: $request->validated('content'),
+            categoryId: $request->validated('category_id'),
+            tagIds: $request->validated('tag_ids') ?? []
+        );
 
-        $post = $post->update($validated);
+        $action->execute($data, $post);
 
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
@@ -98,15 +109,11 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id, DeletePostAction $action)
     {
         $post = Post::findOrFail($id);
 
-        if($post->tags()->count() > 0) {
-            $post->tags()->detach($post->post_id);
-        }
-
-        $post->delete();
+        $action->execute($post);
 
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
     }

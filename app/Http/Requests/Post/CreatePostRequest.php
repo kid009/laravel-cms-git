@@ -26,6 +26,8 @@ class CreatePostRequest extends FormRequest
             'title' => ['required', 'string', 'max:255', 'unique:posts,title'],
             'description' => ['required', 'string'],
             'content' => ['required', 'string'],
+            'tag_ids'     => ['nullable', 'array'], // อนุญาตให้เป็นค่าว่างได้ (ถ้าไม่เลือก Tag เลย) และต้องเป็น Array
+            'tag_ids.*'   => ['integer', 'exists:tags,id'], // ตัวเลขข้างใน Array ต้องมีอยู่จริงในตาราง tags
         ];
     }
 }

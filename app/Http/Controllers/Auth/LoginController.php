@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class LoginController extends Controller
 {
-    public function showLoginForm()
+    public function show()
     {
         return view('auth.login');
     }
 
-    public function login(LoginRequest $request, AuthenticateUserAction $action): RedirectResponse
+    public function authenticate(LoginRequest $request, AuthenticateUserAction $action): RedirectResponse
     {
         // 1. รับ Validate Data
         $data = $request->validated();
@@ -38,6 +38,6 @@ class LoginController extends Controller
         session()->invalidate();
         session()->regenerateToken(); // ป้องกัน CSRF
 
-        return redirect()->route('show-login-form');
+        return redirect()->route('login');
     }
 }
