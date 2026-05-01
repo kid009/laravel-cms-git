@@ -17,14 +17,14 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
 - phpunit/phpunit (PHPUNIT) - v11
-- tailwindcss (TAILWINDCSS) - v4
+- bootstrap (BOOTSTRAP) - v5
 
 ## Skills Activation
 
 This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
 - `livewire-development` — Develops reactive Livewire 4 components. Activates when creating, updating, or modifying Livewire components; working with wire:model, wire:click, wire:loading, or any wire: directives; adding real-time updates, loading states, or reactivity; debugging component behavior; writing Livewire tests; or when the user mentions Livewire, component, counter, or reactive UI.
-- `tailwindcss-development` — Styles applications using Tailwind CSS v4 utilities. Activates when adding styles, restyling components, working with gradients, spacing, layout, flex, grid, responsive design, dark mode, colors, typography, or borders; or when the user mentions CSS, styling, classes, Tailwind, restyle, hero section, cards, buttons, or any visual/UI changes.
+- `bootstrap-development` — Styles applications using Bootstrap 5 utilities and components. Activates when adding styles, restyling components, working with grids, spacing, layout, flex, responsive design, colors, typography, or borders; or when the user mentions CSS, styling, classes, Bootstrap, restyle, hero section, cards, buttons, or any visual/UI changes.
 
 ## Conventions
 
@@ -244,11 +244,11 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - To run all tests in a file: `php artisan test --compact tests/Feature/ExampleTest.php`.
 - To filter on a particular test name: `php artisan test --compact --filter=testName` (recommended after making a change to a related file).
 
-=== tailwindcss/core rules ===
+=== bootstrap/core rules ===
 
-# Tailwind CSS
+# Bootstrap
 
-- Always use existing Tailwind conventions; check project patterns before adding new ones.
-- IMPORTANT: Always use `search-docs` tool for version-specific Tailwind CSS documentation and updated code examples. Never rely on training data.
-- IMPORTANT: Activate `tailwindcss-development` every time you're working with a Tailwind CSS or styling-related task.
+- Always use existing Bootstrap 5 conventions; check project patterns before adding new ones.
+- Follow Bootstrap's utility-first approach and component-based structure.
+- IMPORTANT: Activate `bootstrap-development` every time you're working with a Bootstrap or styling-related task.
 </laravel-boost-guidelines>

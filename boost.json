@@ -6,8 +6,8 @@
     "herd_mcp": false,
     "mcp": true,
     "sail": false,
-    "skills": [
+"skills": [
         "livewire-development",
-        "tailwindcss-development"
+        "bootstrap-development"
     ]
 }

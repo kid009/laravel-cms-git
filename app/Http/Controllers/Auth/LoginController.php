@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Actions\Auth\AuthenticateUserAction;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -13,23 +10,7 @@ class LoginController extends Controller
 {
     public function show()
     {
-        return view('auth.login');
-    }
-
-    public function authenticate(LoginRequest $request, AuthenticateUserAction $action): RedirectResponse
-    {
-        // 1. รับ Validate Data
-        $data = $request->validated();
-
-        // 2. ส่งให้ Action ทำงาน
-        $action->execute(
-            $data['email'],
-            $data['password'],
-        );
-
-        // 3. Response กลับ
-        // intended() จะพากลับไปยังหน้าที่ผู้ใช้พยายามเข้าถึงก่อนโดนดีดมาหน้า Login
-        return redirect()->intended(route('dashboard'));
+        return view('auth.login-show');
     }
 
     public function logout(): RedirectResponse

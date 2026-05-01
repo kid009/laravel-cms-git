@@ -1,21 +1,27 @@
 <?php
 
-// app/Actions/Auth/AuthenticateUserAction.php
-namespace App\Actions\Auth;
+namespace App\Livewire\Auth;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
-class AuthenticateUserAction
+class Login extends Component
 {
-    /**
-     * @throws ValidationException
-     */
-    public function execute(string $email, string $password): void
+    #[Validate('required')]
+    public string $email = '';
+
+    #[Validate('required')]
+    public string $password = '';
+
+    public function authenticate()
     {
+        $this->validate();
+
         $credentials = [
-            'email' => $email,
-            'password' => $password,
+            'email' => $this->email,
+            'password' => $this->password,
         ];
 
         // ใช้ Auth::attempt เพื่อตรวจสอบสิทธิ์พร้อมสร้าง Session
@@ -28,5 +34,12 @@ class AuthenticateUserAction
 
         // ป้องกัน Session Fixation Attack (สำคัญมากใน Production)
         session()->regenerate();
+
+        return redirect()->intended(route('dashboard'));
+    }
+
+    public function render()
+    {
+        return view('livewire.auth.login');
     }
 }
